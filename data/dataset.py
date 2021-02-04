@@ -18,7 +18,7 @@ class COVID19Dataset(Dataset):
         self.transforms = transforms
 
         # load metadata
-        self.metadata = pd.read_pickle(os.path.join(self.dataset_root, 'activeset.pkl')) # label, fram_pos, sensor, raw_filenames, video_hash, patient, patient hash, hospital, filnename
+        self.metadata = pd.read_pickle(os.path.join(self.dataset_root, 'new_dataset.pkl')) # label, fram_pos, sensor, raw_filenames, video_hash, patient, patient hash, hospital, filnename
 
         # filter desired hospitals
         metadata_mask = self.metadata.hospital.str.contains('|'.join(args.hospitals))
@@ -160,8 +160,7 @@ class TransformableFullMetadataSubset(Subset):
                        "filenames": self.dataset.metadata.raw_filenames[translated_idx],
                        "frame_pos": self.dataset.metadata.frame_pos[translated_idx],
                        "patient": self.dataset.metadata.patient_hash[translated_idx],
-                       "patient_name": self.dataset.metadata.patient[translated_idx],
-                       "explanation": self.dataset.metadata.explanation[translated_idx]}
+                       "patient_name": self.dataset.metadata.patient[translated_idx]}
 
 def compute_uniform_sampling_weights(metadata, indices):
     '''
