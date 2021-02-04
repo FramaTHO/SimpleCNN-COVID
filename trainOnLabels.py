@@ -25,7 +25,7 @@ class Net(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
         self.drop_out = nn.Dropout()
-        self.fc1 = nn.Linear(30976, 1000) 
+        self.fc1 = nn.Linear(18496, 1000) 
         self.fc2 = nn.Linear(1000, 4)
     
     def forward(self, x):
@@ -64,7 +64,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset_root', default='/home/dataset/', type=str, help='Root folder for the datasets.')
     parser.add_argument('--split_file', default='split_0.csv', type=str, help='File defining train and test splits.')
     parser.add_argument('--standard_image_size', nargs='+', type=int, default=[250, 250])
-    parser.add_argument('--input_image_size', nargs='+', type=int, default=[90,90]) 
+    parser.add_argument('--input_image_size', nargs='+', type=int, default=[70,70]) 
     parser.add_argument('--domains_count', type=int, default=2)
     parser.add_argument('--domain_label', type=str, default="sensor_label")
     parser.add_argument('--affine_sigma', type=float, default=0.0)
