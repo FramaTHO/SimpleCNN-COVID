@@ -60,7 +60,7 @@ if __name__ == '__main__':
     parser.add_argument("--num_classes", default=4, type=int)
     parser.add_argument('--hospitals', nargs='+', type=str, default=['Germania', 'Pavia', 'Lucca', 'Brescia', 'Gemelli - Roma', 'Tione', 'Trento'], 
         help='Name of the hospital / folder to be used.')
-    parser.add_argument('--dataset_root', default='/home/marrone/covid19/dataset/preprocessed-58k', type=str, help='Root folder for the datasets.')
+    parser.add_argument('--dataset_root', default='/home/dataset', type=str, help='Root folder for the datasets.')
     parser.add_argument('--split_file', default='split_0.csv', type=str, help='File defining train and test splits.')
     parser.add_argument('--standard_image_size', nargs='+', type=int, default=[250, 250])
     parser.add_argument('--input_image_size', nargs='+', type=int, default=[70,70]) 
