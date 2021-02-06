@@ -26,7 +26,7 @@ class Net(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
         self.drop_out = nn.Dropout()
-        self.fc1 = nn.Linear(18496, 1000) 
+        self.fc1 = nn.Linear(25600, 1000) 
         self.fc2 = nn.Linear(1000, 4)
     
     def forward(self, x):
@@ -92,8 +92,8 @@ def training_model(model, train_loader, bce, cross_entropy, optimizer, epoch, nu
 
             tensors_images = []
             for hospital, expl in zip(metadata["hospital"], metadata["explanation"]):
-                np_image = np.load("/home/dataset/segmentation frames/"+hospital+"/"+expl)
-                resized_image = cv2.resize(np_image, (35,35), cv2.INTER_AREA) ########################
+                np_image = np.load("/home/marrone/covid19/dataset/preprocessed-58k/segmentation frames/"+hospital+"/"+expl)
+                resized_image = cv2.resize(np_image, (40,40), cv2.INTER_AREA) ########################
                 norm_image = np.where(resized_image > 0, 1, 0)
                 norm_image = resized_image / 255
                 tensors_images.append(torch.from_numpy(norm_image)) 
@@ -118,7 +118,7 @@ def training_model(model, train_loader, bce, cross_entropy, optimizer, epoch, nu
             prec = prec / n_batches
             rec = rec / n_batches
   
-            if (i + 1) % 660 == 0:    
+            if (i + 1) % 2 == 0:    
                 all_labels = np.concatenate(all_labels)
                 all_predictions = np.concatenate(all_predictions) 
                 scores = _compute_scores(all_labels, all_predictions)           
@@ -139,10 +139,10 @@ if __name__ == '__main__':
     parser.add_argument("--num_classes", default=4, type=int)
     parser.add_argument('--hospitals', nargs='+', type=str, default=['Germania', 'Pavia', 'Lucca', 'Brescia', 'Gemelli - Roma', 'Tione', 'Trento'], 
         help='Name of the hospital / folder to be used.')
-    parser.add_argument('--dataset_root', default='/home/dataset/', type=str, help='Root folder for the datasets.')
+    parser.add_argument('--dataset_root', default='/home/marrone/covid19/dataset/preprocessed-58k', type=str, help='Root folder for the datasets.')
     parser.add_argument('--split_file', default='80_20_activeset.csv', type=str, help='File defining train and test splits.')
     parser.add_argument('--standard_image_size', nargs='+', type=int, default=[250, 250])
-    parser.add_argument('--input_image_size', nargs='+', type=int, default=[70, 70]) 
+    parser.add_argument('--input_image_size', nargs='+', type=int, default=[80, 80]) 
     parser.add_argument('--domains_count', type=int, default=2)
     parser.add_argument('--domain_label', type=str, default="sensor_label")
     parser.add_argument('--affine_sigma', type=float, default=0.0)
@@ -159,13 +159,13 @@ if __name__ == '__main__':
     parser.add_argument("--checkpoint_interval", type=int, default=33, help="interval between saving model weights")
     parser.add_argument("--evaluation_interval", type=int, default=3, help="interval evaluations on validation set")
     # Network
-    parser.add_argument("--batch_size", default=64, type=int)
+    parser.add_argument("--batch_size", default=16, type=int)
     opt = parser.parse_args()
 
     writer = SummaryWriter("./runs/")
     
     num_epochs = 100
-    batch_size = 64
+    batch_size = 16
     learning_rate = 0.001
 
     cuda = torch.cuda.is_available()
